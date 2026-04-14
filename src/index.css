@@ -1,254 +1,187 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap');
 
 :root {
-  --case-top: #676c73;
-  --case-bot: #2b2f35;
-  --lcd-bg: #f3d9a3;
-  --lcd-ink: #3a2700;
-  --lcd-dim: #a38241;
-  --lcd-line: rgba(0, 0, 0, 0.06);
-  --dock: #1a1e22;
-}
-
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
+  --dream-blue: #a2d2ff;
+  --dream-purple: #cdb4db;
+  --dream-pink: #ffafcc;
+  --dream-yellow: #ffea00;
+  --glass-white: rgba(255, 255, 255, 0.4);
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: #0d0d0d;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-  overflow: hidden;
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-family: 'Outfit', sans-serif;
+  overflow-x: hidden;
+  background: linear-gradient(180deg, #1d2b64 0%, #f8cdda 100%);
+  min-height: 100vh;
+  color: #2b2d42;
 }
 
-/* PDA FULL SCREEN WRAPPER */
-.pda2 {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  color: var(--lcd-ink);
-  overflow: hidden;
+/* --- THE ROCKET (Uiverse) --- */
+.rocket {
+  position: fixed;
+  bottom: 10%;
+  right: 5%;
+  width: 50px;
+  z-index: 100;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
 }
-
-.pda2__bezel {
+.rocket .rocket-body {
+  width: 50px;
+  animation: bounce 0.5s infinite;
+}
+.rocket .rocket-body .body {
+  background-color: #f3f3f3;
+  height: 100px;
+  border-top-right-radius: 100%;
+  border-top-left-radius: 100%;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  border-top: 3px solid #fff;
+}
+.rocket .window {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, var(--case-top), var(--case-bot));
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  background-color: var(--dream-blue);
+  left: 12px;
+  top: 25px;
+  border: 3px solid #ccc;
 }
-
-.pda2__screws {
+.rocket .fin {
   position: absolute;
-  inset: 12px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  pointer-events: none;
-  z-index: 5;
+  z-index: -1;
+  height: 35px;
+  width: 30px;
+  background-color: var(--dream-pink);
 }
-
-.pda2__screw {
+.rocket .fin-left { left: -15px; top: 60px; border-top-left-radius: 80%; }
+.rocket .fin-right { right: -15px; top: 60px; border-top-right-radius: 80%; }
+.rocket .exhaust-flame {
+  position: absolute;
+  top: 90%;
   width: 16px;
-  height: 16px;
+  background: linear-gradient(to bottom, transparent 10%, #fff 100%);
+  height: 80px;
+  left: 17px;
+  animation: exhaust 0.2s infinite;
 }
 
-.pda2__screen {
-  position: relative;
-  flex: 1;
-  background: var(--lcd-bg);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow:
-    inset 0 4px 10px rgba(0, 0, 0, 0.3),
-    inset 0 -2px 0 rgba(0, 0, 0, 0.12),
-    0 0 0 4px #101010;
-  margin-bottom: 80px; /* Space for the dock and knob */
-  display: flex;
-  flex-direction: column;
+/* --- DREAMY CONTAINERS --- */
+.dream-card {
+  background: var(--glass-white);
+  backdrop-filter: blur(15px);
+  border-radius: 40px;
+  border: 4px solid #fff;
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
 }
 
-.pda2__screen::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-      0deg,
-      transparent 0 1px,
-      var(--lcd-line) 1px 2px
-    );
-  pointer-events: none;
-  z-index: 10;
-}
-
-/* Status Bar */
-.pda2__statusbar {
-  height: 28px;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  padding: 0 12px;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.15);
-  font-weight: 900;
-  font-size: 12px;
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.pda2__viewport {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-  position: relative;
-}
-
-/* PDA Controls */
-.pda2__knob {
-  position: absolute;
-  bottom: 25px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #7b828a, #444a52);
-  box-shadow:
-    inset 0 3px 5px rgba(255, 255, 255, 0.18),
-    inset 0 -3px 5px rgba(0, 0, 0, 0.5),
-    0 6px 10px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-  display: grid;
-  place-items: center;
-  z-index: 20;
-}
-
-.pda2__knob-cap {
-  width: 14px;
-  height: 14px;
-  border-radius: 3px;
-  background: #14181d;
-}
-
-.pda2__led {
-  position: absolute;
-  top: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #ff3a3a;
-  box-shadow: 0 0 8px #ff3a3a;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  50% { opacity: 0.5; }
-}
-
-/* Navigation Dock */
-.pda2__dock {
-  position: absolute;
-  bottom: 0;
-  left: 30px;
-  right: 30px;
-  height: 60px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  background: var(--dock);
-  border-radius: 12px 12px 0 0;
-  overflow: hidden;
-  border: 4px solid #101010;
-  border-bottom: none;
-}
-
-.pda2__db {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.2s;
-  color: #555;
-  gap: 4px;
-}
-
-.pda2__db.active {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--lcd-bg);
-}
-
-.pda2__db:active {
-  transform: translateY(2px);
-}
-
-.pda2__ico {
-  width: 20px;
-  height: 20px;
-  stroke: currentColor;
-  stroke-width: 2;
-  fill: none;
-}
-
-/* Custom Content Styles */
-.pda-card {
-  border: 2px solid var(--lcd-ink);
-  padding: 12px;
-  margin-bottom: 16px;
-  background: rgba(0,0,0,0.03);
-}
-
-.pda-input {
+.cloud-input {
   width: 100%;
-  background: transparent;
-  border: 2px solid var(--lcd-ink);
-  padding: 12px;
-  color: var(--lcd-ink);
-  font-family: inherit;
-  font-size: 16px;
-  outline: none;
-}
-
-.pda-button {
-  background: var(--lcd-ink);
-  color: var(--lcd-bg);
-  padding: 12px;
-  width: 100%;
+  background: #fff;
   border: none;
-  font-weight: 900;
-  text-transform: uppercase;
-  margin-top: 12px;
+  padding: 25px;
+  border-radius: 50px;
+  font-size: 18px;
+  box-shadow: 0 10px 30px rgba(162, 210, 255, 0.4);
+  outline: none;
+  font-family: inherit;
+}
+
+.dream-button {
+  background: linear-gradient(45deg, var(--dream-pink), var(--dream-purple));
+  color: white;
+  padding: 20px 40px;
+  border-radius: 50px;
+  border: none;
+  font-weight: 800;
+  font-size: 20px;
   cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 10px 20px rgba(255, 175, 204, 0.3);
+}
+.dream-button:hover {
+  transform: translateY(-5px) scale(1.05);
 }
 
-.moral-box {
-  margin-top: 24px;
-  padding: 16px;
-  border: 4px double var(--lcd-ink);
+/* --- ANIMATIONS --- */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes exhaust {
+  0% { transform: scaleY(1); opacity: 0.8; }
+  100% { transform: scaleY(1.2); opacity: 1; }
+}
+
+/* --- NAV DOCK --- */
+.dream-nav {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 10px 30px;
+  border-radius: 60px;
+  display: flex;
+  gap: 30px;
+  border: 2px solid #fff;
+  z-index: 1000;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  color: var(--dream-blue);
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 12px;
+  transition: 0.3s;
+}
+.nav-item.active {
+  color: var(--dream-pink);
+  transform: scale(1.2);
+}
+
+/* --- STORY STYLING --- */
+.story-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.story-img-wrapper {
+  width: 250px;
+  height: 250px;
+  border-radius: 100px 30px 100px 30px;
+  overflow: hidden;
+  border: 8px solid #fff;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.story-text {
+  font-size: 22px;
+  line-height: 1.6;
   text-align: center;
+  color: #4a4e69;
 }
 
-.story-scene img {
-  width: 100%;
-  border: 3px solid var(--lcd-ink);
-  filter: sepia(0.5) contrast(1.2);
-}
-
-/* Custom Scrollbar for Retro Feel */
-.custom-scroll::-webkit-scrollbar {
-  width: 6px;
-}
-.custom-scroll::-webkit-scrollbar-track {
-  background: var(--lcd-dim);
-}
-.custom-scroll::-webkit-scrollbar-thumb {
-  background: var(--lcd-ink);
+.moral-bubble {
+  background: var(--dream-yellow);
+  padding: 30px;
+  border-radius: 40px;
+  position: relative;
+  margin-top: 40px;
+  box-shadow: 0 10px 0 #ecca2f;
+  font-weight: 800;
+  font-style: italic;
+  font-size: 24px;
 }
