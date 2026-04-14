@@ -1,177 +1,176 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Book, Home, Telescope, Settings, Heart, Send, Volume2, VolumeX, Moon, Sun } from 'lucide-react';
+import { Sparkles, Book, Home, ChevronRight, ChevronLeft, Volume2, VolumeX, Moon, Sun, Heart } from 'lucide-react';
 
-// --- SEMANTIC STORY ENGINE (Elite Optimized) ---
-const buildAdventure = (seed) => {
+// --- GIGA-DYNAMIC STORY ENGINE ---
+const generateUniqueStory = (seed) => {
   const hero = seed.charAt(0).toUpperCase() + seed.slice(1);
+  const themes = [
+    { loc: "Whispering Peaks", quest: "find the Lost Emerald", fail: "a mysterious mist", win: "a song of light" },
+    { loc: "Neon Galaxy", quest: "repair the Golden Rocket", fail: "a stray asteroid", win: "a burst of star-dust" },
+    { loc: "Coral Kingdom", quest: "save the Diamond Shell", fail: "a giant bubble-trap", win: "a dance of dolphins" },
+    { loc: "Enchanted Library", quest: "read the Silent Scroll", fail: "a cheeky ink-goblin", win: "a rain of wisdom" }
+  ];
+  
+  // Hash seed to pick theme
+  const hash = seed.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const theme = themes[hash % themes.length];
+
   return {
-    title: `The Great Journey of ${hero}`,
-    scenes: [
+    hero,
+    title: `${hero} and the ${theme.loc}`,
+    pages: [
       {
-        text: `In a world made of soft colors and gentle winds, ${hero} lived a very happy life. But ${hero} always had a curious heart, wondering what lay beyond the Great Sparkling River. One morning, with a bag full of courage, the journey began.`,
-        image: `https://loremflickr.com/800/800/${seed},nature`
+        text: `In the heart of the ${theme.loc}, lived a brave soul named ${hero}. Life was peaceful until a strange message arrived: it was time to ${theme.quest}.`,
+        image: `https://loremflickr.com/800/800/${seed},${theme.loc.split(' ')[0]},fantasy`
       },
       {
-        text: `As ${hero} walked through the Whispering Woods, a small problem appeared: a bridge made of rainbows had lost its colors! ${hero} knew that only a truly brave heart could help the rainbow shine again.`,
-        image: `https://loremflickr.com/800/800/${seed},forest`
+        text: `The path was long and winding. Suddenly, ${theme.fail} appeared out of nowhere! It seemed like ${hero} would never reach the goal. But a hero never gives up.`,
+        image: `https://loremflickr.com/800/800/${seed},travel,mystery`
       },
       {
-        text: `By sharing a story and a warm smile, ${hero} helped the bridge glow once more. Crossing over, ${hero} found a field of golden sunflowers. The world felt bigger and more beautiful than ever.`,
-        image: `https://loremflickr.com/800/800/${seed},garden`
+        text: `Using a ${theme.win}, ${hero} cleared the path. The ${theme.quest} was finally within reach, glowing brighter than the sun itself!`,
+        image: `https://loremflickr.com/800/800/${seed},magic,win`
       },
       {
-        text: `Returning home at sunset, ${hero} realized that the greatest adventure was the kindness shared along the way. The village gathered around to hear the tales of the brave traveler.`,
-        image: `https://loremflickr.com/800/800/${seed},village`
+        text: `With the quest complete, ${hero} returned home. The stars of the ${theme.loc} twinkled in celebration of a journey well-spent and a lesson well-learned.`,
+        image: `https://loremflickr.com/800/800/${seed},celebration,sunset`
       }
     ],
-    moral: `True bravery is found in kindness, and the best adventures are those we share.`
+    moral: `Every ${theme.quest} begins with a single step and a heart full of ${theme.win.split(' ')[2]}.`
   };
 };
 
 export default function App() {
   const [view, setView] = useState('home');
   const [inputTerm, setInputTerm] = useState('');
-  const [isGenerating, setIsGenerating] = useState(false);
   const [activeStory, setActiveStory] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef(null);
 
-  useEffect(() => {
-    document.body.className = isDarkMode ? 'night-mode' : 'day-mode';
-  }, [isDarkMode]);
-
-  const startTelling = () => {
+  const startStory = () => {
     if (!inputTerm.trim()) return;
     setIsGenerating(true);
     setTimeout(() => {
-      setActiveStory(buildAdventure(inputTerm));
+      setActiveStory(generateUniqueStory(inputTerm));
       setIsGenerating(false);
-      setView('read');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 4000);
+      setView('book');
+      setCurrentPage(0);
+    }, 3000);
   };
 
   return (
-    <div className="min-h-screen">
+    <div className={`min-h-screen ${isDarkMode ? 'dark-mode' : ''}`}>
       <audio ref={audioRef} src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" loop />
       
-      {/* --- HYBRID BACKGROUND ELEMENTS --- */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        {[...Array(15)].map((_, i) => (
-          <div key={i} className="star-hybrid" style={{ 
-            width: Math.random() * 4 + 2 + 'px', 
-            height: Math.random() * 4 + 2 + 'px', 
-            top: Math.random() * 100 + '%', 
-            left: Math.random() * 100 + '%',
-            animationDelay: Math.random() * 5 + 's' 
-          }} />
-        ))}
-      </div>
+      <AnimatePresence mode="wait">
+        {view === 'home' && (
+          <motion.div 
+            key="home" 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0, scale: 1.1 }}
+            className="home-portal"
+          >
+            <div className="portal-wand">✨</div>
+            <h1 className="text-7xl font-bold mb-4 font-['Fredoka'] text-white drop-shadow-2xl">ManVachan</h1>
+            <p className="text-2xl text-white/70 mb-12 italic">Whisper a name, weave a world...</p>
 
-      <div className="rocket-hybrid">
-         <svg viewBox="0 0 100 200" className="w-full">
-            <path d="M50 20 C30 50 20 100 20 150 L80 150 C80 100 70 50 50 20 Z" fill="#ff85a1" />
-            <circle cx="50" cy="80" r="10" fill="white" opacity="0.5" />
-            <path d="M20 130 L5 160 L20 160 Z" fill="#4cc9f0" />
-            <path d="M80 130 L95 160 L80 160 Z" fill="#4cc9f0" />
-         </svg>
-      </div>
+            <div className="input-magic-container">
+              <input 
+                type="text" 
+                value={inputTerm}
+                onChange={(e) => setInputTerm(e.target.value)}
+                placeholder="Name your hero..." 
+                className="magic-input"
+              />
+              <button onClick={startStory} className="magic-btn">
+                {isGenerating ? "Wand is Glowing..." : "WEAVE MAGIC"}
+              </button>
+            </div>
 
-      <div className="theme-toggle-fixed" onClick={() => setIsDarkMode(!isDarkMode)}>
-         <button className="hybrid-btn !p-4 !rounded-full shadow-2xl">
-            {isDarkMode ? <Sun /> : <Moon />}
-         </button>
-      </div>
+            <div className="fixed bottom-10 right-10" onClick={() => setIsDarkMode(!isDarkMode)}>
+               <button className="nav-circle !bg-white/10">{isDarkMode ? <Sun /> : <Moon />}</button>
+            </div>
+          </motion.div>
+        )}
 
-      {/* --- HYBRID HUB --- */}
-      <div className="hybrid-hub">
-        <AnimatePresence mode="wait">
-          {view === 'home' && (
-            <motion.div key="home" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }} className="space-y-12">
-               <header>
-                  <h1 className="hybrid-title">ManVachan</h1>
-                  <p className="hybrid-subtitle">The AI Heritage Masterpiece</p>
-               </header>
-
-               <div className="elite-card text-center space-y-10">
-                  <div className="space-y-4">
-                     <p className="font-bold uppercase tracking-widest text-[#ff85a1]">What shall we weave?</p>
-                     <input 
-                      type="text" 
-                      value={inputTerm}
-                      onChange={(e) => setInputTerm(e.target.value)}
-                      placeholder="e.g. A Brave Robot..." 
-                      className="w-full bg-transparent border-b-4 border-[#ff85a1]/30 outline-none text-2xl font-black text-center py-4 text-inherit"
-                     />
-                  </div>
-                  <button 
-                    onClick={startTelling}
-                    disabled={!inputTerm.trim() || isGenerating}
-                    className="hybrid-btn w-full"
-                  >
-                    {isGenerating ? "WAKING THE SCROLLS..." : "LAUNCH ADVENTURE"}
-                  </button>
+        {view === 'book' && activeStory && (
+          <motion.div 
+            key="book" 
+            initial={{ opacity: 0, rotateY: 90 }} 
+            animate={{ opacity: 1, rotateY: 0 }} 
+            className="book-container"
+          >
+            <div className="book">
+               {/* Left Side: Always Image */}
+               <div className="book-left">
+                  <AnimatePresence mode="wait">
+                    <motion.img 
+                      key={currentPage}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      src={activeStory.pages[currentPage].image} 
+                      className="page-image" 
+                    />
+                  </AnimatePresence>
                </div>
 
-               <div className="grid grid-cols-2 gap-4">
-                  <div className="elite-card !p-8 flex flex-col items-center gap-2">
-                     <Book className="text-[#4cc9f0]" />
-                     <span className="font-black text-xs">LIBRARY</span>
-                  </div>
-                  <div className="elite-card !p-8 flex flex-col items-center gap-2" onClick={() => setIsMuted(!isMuted)}>
-                     {isMuted ? <VolumeX className="text-[#ff85a1]" /> : <Volume2 className="text-[#ff85a1]" />}
-                     <span className="font-black text-xs">MUSIC</span>
-                  </div>
+               {/* Right Side: Always Text */}
+               <div className="book-right">
+                  <AnimatePresence mode="wait">
+                    <motion.div 
+                      key={currentPage}
+                      initial={{ x: 50, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      exit={{ x: -50, opacity: 0 }}
+                      className="page-content"
+                    >
+                      <h3 className="story-heading">Chapter {currentPage + 1}</h3>
+                      <p className="story-body">{activeStory.pages[currentPage].text}</p>
+                      
+                      {currentPage === activeStory.pages.length - 1 && (
+                        <div className="moral-overlay mt-10">
+                           <Heart className="mx-auto mb-2" fill="white" />
+                           <p className="font-bold">"{activeStory.moral}"</p>
+                        </div>
+                      )}
+                    </motion.div>
+                  </AnimatePresence>
                </div>
-            </motion.div>
-          )}
+            </div>
 
-          {view === 'read' && activeStory && (
-            <motion.div key="read" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-16">
-               <header className="text-center">
-                  <h2 className="hybrid-title !text-4xl italic">{activeStory.title}</h2>
-                  <div className="flex justify-center gap-2 mt-4 text-yellow-500"><Sparkles /><Sparkles /><Sparkles /></div>
-               </header>
-
-               {activeStory.scenes.map((scene, i) => (
-                 <div key={i} className="elite-card !p-0 overflow-hidden flex flex-col items-center">
-                    <div className="blended-image-wrapper">
-                       <img src={scene.image} alt="Story scene" />
-                    </div>
-                    <div className="p-10 text-xl leading-relaxed text-center font-medium opacity-90">
-                       {scene.text}
-                    </div>
-                 </div>
-               ))}
-
-               <div className="elite-card !bg-yellow-500 !text-white text-center italic shadow-2xl border-none">
-                  <Heart className="mx-auto mb-4" fill="white" size={40} />
-                  <p className="text-2xl font-black">"{activeStory.moral}"</p>
+            <div className="book-nav">
+               <button 
+                onClick={() => setCurrentPage(Math.max(0, currentPage - 1))}
+                className="nav-circle"
+               >
+                 <ChevronLeft />
+               </button>
+               
+               <div className="nav-circle bg-white/20 px-8 !w-auto !rounded-full text-sm font-bold">
+                 {currentPage + 1} / {activeStory.pages.length}
                </div>
 
-               <button onClick={() => setView('home')} className="hybrid-btn w-full !bg-gray-500">BACK TO HOME</button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      <nav className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-white/20 backdrop-blur-3xl px-12 py-5 rounded-full flex gap-12 shadow-2xl z-50 border border-white/30">
-        <NavIcon icon={Home} label="STAR" active={view === 'home'} onClick={() => setView('home')} />
-        <NavIcon icon={Book} label="LORE" active={view === 'read'} onClick={() => activeStory && setView('read')} />
-        <NavIcon icon={Telescope} label="SEEK" active={false} onClick={() => {}} />
-        <NavIcon icon={Settings} label="CORE" active={false} onClick={() => {}} />
-      </nav>
-    </div>
-  );
-}
-
-function NavIcon({ icon: Icon, label, active, onClick }) {
-  return (
-    <div onClick={onClick} className={`flex flex-col items-center gap-1 cursor-pointer transition-all ${active ? 'text-[#ff85a1] scale-125' : 'text-gray-400 group-hover:text-white'}`}>
-       <Icon size={24} />
-       <span className="text-[10px] font-black tracking-widest uppercase">{label}</span>
+               <button 
+                onClick={() => {
+                  if (currentPage < activeStory.pages.length - 1) {
+                    setCurrentPage(currentPage + 1);
+                  } else {
+                    setView('home');
+                  }
+                }}
+                className="nav-circle"
+               >
+                 {currentPage === activeStory.pages.length - 1 ? <Home /> : <ChevronRight />}
+               </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
