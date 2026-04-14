@@ -11,92 +11,74 @@
 
 body {
   margin: 0;
-  background: radial-gradient(circle at center, #ffffff 0%, #e0f2fe 100%);
+  background: #fdfaf1;
   font-family: 'Outfit', sans-serif;
   overflow-x: hidden;
-  height: 100vh;
 }
 
-/* --- GLOBAL MAGIC UI --- */
-.magical-btn {
+/* --- RESTORED HOME PAGE UI (PREVIOUS VERSION) --- */
+.hero-section {
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% 50%, #fff 0%, #e0f2fe 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-title {
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 5rem;
+  color: var(--p-purple);
+  text-align: center;
+  line-height: 1;
+  margin-bottom: 20px;
+  text-shadow: 4px 4px 0px var(--p-blue);
+}
+
+.input-bubble-container {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 60px;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.1);
+  width: 90%;
+  max-width: 800px;
+  border: 8px solid var(--p-blue);
+  position: relative;
+  z-index: 10;
+}
+
+.magical-input {
+  width: 100%;
+  border: none;
+  font-size: 24px;
+  padding: 20px;
+  text-align: center;
+  outline: none;
+  font-weight: 700;
+  color: var(--p-purple);
+  background: transparent;
+}
+
+.create-btn {
   background: var(--p-pink);
   color: white;
   font-family: 'Luckiest Guy', cursive;
-  font-size: 20px;
-  padding: 12px 30px;
-  border-radius: 30px;
+  font-size: 32px;
+  padding: 20px 60px;
+  border-radius: 40px;
   border: none;
-  box-shadow: 0 6px 0 #c9184a;
   cursor: pointer;
+  margin-top: 40px;
+  box-shadow: 0 12px 0 #c9184a;
   transition: all 0.2s;
 }
-.magical-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #c9184a; }
-.magical-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #c9184a; }
+.create-btn:hover { transform: translateY(-4px); box-shadow: 0 16px 0 #c9184a; }
 
-.magical-card {
-  background: var(--glass);
-  border-radius: 40px;
-  border: 6px solid var(--p-blue);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.08);
-  padding: 30px;
-  transition: transform 0.3s;
-}
-.magical-card:hover { transform: scale(1.02) rotate(1deg); }
-
-/* --- 3D BOOK PHYSICS --- */
-.flip-book-container {
-  perspective: 2000px;
-  width: 95vw;
-  height: 80vh;
-  margin: 40px auto;
-  position: relative;
-}
-
-.book-page {
-  width: 100%;
-  height: 100%;
-  background: white;
-  display: flex;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.1);
-  border-radius: 20px;
-  overflow: hidden;
-  border: 10px solid #fff;
-}
-
-.left-panel { flex: 1; background: #f8fafc; padding: 40px; }
-.right-panel { flex: 1; background: #fff; padding: 50px; display: flex; flex-direction: column; }
-
-.story-illustration {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 20px;
-  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-  border: 4px solid var(--p-blue);
-}
-
-/* --- MINI-GAME UI --- */
-.memory-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.memory-card {
-  aspect-ratio: 1;
-  background: var(--p-blue);
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 40px;
-  cursor: pointer;
-  box-shadow: 0 8px 0 #0077b6;
-}
-
-/* --- NAVBAR --- */
+/* --- KEEP IMPROVEMENTS (LIBRARY, BOOK, GAMES) --- */
 .global-nav {
   position: fixed;
   top: 20px;
@@ -117,16 +99,42 @@ body {
   font-size: 22px;
   color: var(--p-purple);
   cursor: pointer;
-  transition: 0.3s;
 }
-.nav-item:hover { transform: scale(1.1); color: var(--p-pink); }
 .nav-item.active { color: var(--p-pink); }
 
-/* --- DOODLES --- */
-.doodle {
-  position: fixed;
-  pointer-events: none;
-  z-index: -1;
-  animation: float 4s infinite ease-in-out;
+.flip-book-container {
+  perspective: 2000px;
+  width: 95vw;
+  height: 85vh;
+  margin: 40px auto;
+  position: relative;
 }
+
+.book-page {
+  width: 100%; height: 100%;
+  background: white; border-radius: 20px; overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.1); border: 10px solid #fff;
+  display: flex;
+}
+
+.left-panel { flex: 1; background: #f8fafc; padding: 40px; }
+.right-panel { flex: 1; background: #fff; padding: 50px; display: flex; flex-direction: column; }
+
+.story-illustration {
+  width: 100%; height: 100%; object-fit: cover;
+  border-radius: 20px; border: 4px solid var(--p-blue);
+}
+
+.memory-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;
+  max-width: 500px; margin: 0 auto;
+}
+
+.memory-card {
+  aspect-ratio: 1; background: var(--p-blue); border-radius: 20px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40px; cursor: pointer; box-shadow: 0 8px 0 #0077b6;
+}
+
+.doodle { position: fixed; pointer-events: none; z-index: -1; animation: float 4s infinite ease-in-out; }
 @keyframes float { 50% { transform: translateY(-30px) rotate(15deg); } }
