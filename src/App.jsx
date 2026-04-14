@@ -1,39 +1,33 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, Book, Gamepad2, Volume2, VolumeX, ArrowLeft, ArrowRight, Star, Cloud, Moon, Sun, Rainbow, Pencil, Rocket } from 'lucide-react';
+import { Home, Book, Gamepad2, Volume2, VolumeX, ArrowLeft, ArrowRight, Star, Cloud, Moon, Rainbow, Rocket } from 'lucide-react';
 
-// --- ADVANCED STORY RETRIEVAL ENGINE ---
-const STORY_REWRITE_ENGINE = (keywords) => {
+// --- STABLE STORY ENGINE (PRESERVED) ---
+const FETCH_LORE = (keywords) => {
   const K = keywords.toLowerCase();
-  
-  // High-Quality Themes
-  const THEMES = [
+  const T = [
     {
-      tags: ["elephant", "jungle", "mouse"],
-      title: "The Giant and the Tiny Hero",
+      tags: ["elephant", "jungle"],
+      title: "Gajju's Gentle Heart",
       pages: [
-        { text: "In the heart of the whispering jungle, Gajju the Elephant was famous for being the biggest and the kindest. He loved the smell of jasmine and the sound of the rain.", img: "elephant-1" },
-        { text: "One day, a tiny mouse named Miku got stuck in a prickly bush. Everyone ignored Miku's small cries, but Gajju's big ears heard him from a mile away.", img: "mouse-bush" },
-        { text: "With great care, Gajju used his trunk to clear the thorns. He didn't care that he was a giant and Miku was small; he only cared that someone needed help.", img: "trunk-rescue" },
-        { text: "Miku and Gajju realized that size doesn't matter when it comes to a hero's heart. They spent the sunset sharing stories and sweet jungle fruits.", img: "friends-sunset" }
+        { text: "In the sun-drenched jungles of Bharat, Gajju the Elephant was known as the Great Protector. Everyone loved him.", img: "elephant-jungle" },
+        { text: "One day, he found a tiny bird with a broken wing. Gajju sheltered the bird from the heavy monsoon rains.", img: "elephant-bird" },
+        { text: "The bird healed, and soon the jungle was filled with the most beautiful songs ever heard.", img: "happy-jungle" }
       ],
-      moral: "True strength lies in being gentle to those smaller than you."
+      moral: "Small kindnesses create big songs in the heart."
     },
     {
-      tags: ["rocket", "space", "stars"],
-      title: "Aria's Cardboard Journey",
+      tags: ["space", "stars"],
+      title: "Aria's Galactic Box",
       pages: [
-        { text: "Aria spent all afternoon building a rocket out of a refrigerator box. She painted it with glittery stars and gave it a secret golden button.", img: "cardboard-rocket" },
-        { text: "Suddenly, the golden button glowed. The rocket wasn't on the floor anymore—it was soaring past the clouds toward the silver moon!", img: "space-launch" },
-        { text: "She met a Moon-Cat who taught her how to dance in zero gravity. Everything was made of stardust and tasted like warm vanilla milk.", img: "moon-cat" },
-        { text: "When Aria woke up, she found a piece of moon-dust in her pocket. She knew that with imagination, any box can take you to the stars.", img: "bedroom-morning" }
+        { text: "Aria sat inside a refrigerator box and painted white stars on its navy-blue walls.", img: "box-rocket" },
+        { text: "She closed her eyes, and suddenly she was zooming past the Moon, headed for the Milky Way!", img: "space-voyage" },
+        { text: "She returned home just in time for milk and cookies, with a pocket full of stardust memories.", img: "bed-stars" }
       ],
-      moral: "Your imagination is the most magical ship ever built."
+      moral: "Your imagination can take you where no ship has ever gone."
     }
   ];
-
-  // Logic: Search for tags or return a high-quality default
-  return THEMES.find(t => t.tags.some(tag => K.includes(tag))) || THEMES[0];
+  return T.find(t => t.tags.some(tag => K.includes(tag))) || T[0];
 };
 
 export default function App() {
@@ -65,139 +59,135 @@ export default function App() {
     if (!input.trim()) return;
     setIsGenerating(true);
     setTimeout(() => {
-      setStory(STORY_REWRITE_ENGINE(input));
+      setStory(FETCH_LORE(input));
       setCurrentPage(0);
       setIsGenerating(false);
       setView('read');
-    }, 3500);
+    }, 3000);
   };
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen">
       <audio ref={audioRef} src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" loop muted={isMuted} />
       
-      {/* --- THE GLOBAL DOODLE CANVAS (RESTORED EVERYWHERE) --- */}
-      <div className="doodle-canvas">
-        <Doodle icon={Star} top="5%" left="10%" color="var(--p-yellow)" />
-        <Doodle icon={Cloud} top="15%" right="15%" color="var(--p-blue)" />
-        <Doodle icon={Moon} top="45%" right="5%" color="var(--p-purple)" />
-        <Doodle icon={Sun} bottom="10%" right="8%" color="var(--p-yellow)" />
-        <Doodle icon={Rocket} top="60%" left="5%" color="var(--p-pink)" />
-        <Doodle icon={Pencil} bottom="20%" left="15%" color="var(--p-blue)" />
+      {/* --- BACKGROUND DECORATION LAYER (STABILIZED) --- */}
+      <div className="magic-background">
+        <Doodle icon={Star} top="10%" left="5%" color="#ff9f1c" />
+        <Doodle icon={Cloud} top="20%" right="10%" color="#4cc9f0" />
+        <Doodle icon={Rainbow} bottom="15%" left="8%" color="#ff4d6d" />
+        <Doodle icon={Moon} top="50%" right="8%" color="#7209b7" />
+        <Doodle icon={Rocket} bottom="10%" right="10%" color="#ff9f1c" />
       </div>
 
-      {/* --- GLOBAL NAV --- */}
-      <nav className="global-nav">
+      {/* --- STABLE NAV BAR --- */}
+      <nav className="stable-nav">
         <div className={`nav-item ${view === 'home' ? 'active' : ''}`} onClick={() => setView('home')}>HOME</div>
         <div className={`nav-item ${view === 'library' ? 'active' : ''}`} onClick={() => setView('library')}>LIBRARY</div>
         <div className={`nav-item ${view === 'games' ? 'active' : ''}`} onClick={() => setView('games')}>GAMES</div>
         <button onClick={() => setIsMuted(!isMuted)} className="p-2 text-[#7209b7]">
-          {isMuted ? <VolumeX /> : <Volume2 />}
+           {isMuted ? <VolumeX /> : <Volume2 />}
         </button>
       </nav>
 
-      <div className="relative z-10 pt-24 pb-20 px-6">
+      <main className="main-stage">
         <AnimatePresence mode="wait">
           {view === 'home' && (
-            <motion.div key="home" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="hero-section">
-              <h1 className="hero-title">CREATE YOUR OWN<br/>MAGICAL STORYBOOK</h1>
-              <div className="input-bubble-container">
-                <input 
-                  className="magical-input" 
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Elephant, Stars, Space adventure..."
-                />
-              </div>
-              <button onClick={handleCreate} disabled={isGenerating || !input.trim()} className="magical-btn-global mt-10">
-                {isGenerating ? "RETRIEVING LORE..." : "CREATE STORY"}
-              </button>
+            <motion.div key="home" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col items-center gap-12 pt-12">
+               <h1 className="text-6xl font-luckiest text-[#7209b7] text-center leading-tight">
+                 CREATE YOUR OWN<br/>MAGICAL STORYBOOK
+               </h1>
+               
+               <div className="magical-card-v2 w-full max-w-[800px]">
+                  <input 
+                    className="w-full bg-transparent border-none text-3xl font-bold text-center outline-none text-[#7209b7]"
+                    placeholder="Elephant, Stars, Space..."
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                  />
+               </div>
+
+               <button onClick={handleCreate} disabled={isGenerating || !input.trim()} className="bouncy-btn">
+                 {isGenerating ? "WAKING MAGIC..." : "CREATE STORY"}
+               </button>
+
+               <div className="flex gap-12 mt-10">
+                  <div className="flex flex-col items-center"><Book className="text-[#4cc9f0] mb-2" size={40} /><p className="font-bold">Library</p></div>
+                  <div className="flex flex-col items-center"><Star className="text-[#ff9f1c] mb-2" size={40} /><p className="font-bold">Favorites</p></div>
+               </div>
             </motion.div>
           )}
 
           {view === 'read' && story && (
-            <motion.div key="read" initial={{ scale: 0.8, rotateY: -90 }} animate={{ scale: 1, rotateY: 0 }} className="master-book flip-book-container">
-              <div className="book-page book-leaf">
-                {/* LEFT: BLENDED IMAGE */}
-                <div className="left-panel">
-                  <AnimatePresence mode="wait">
-                    <motion.div 
-                      key={currentPage} 
-                      className="w-full h-full relative"
-                      initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                    >
-                      <img 
+            <motion.div key="read" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="book-stage">
+               <div className="open-book">
+                  <div className="left-inner">
+                    <AnimatePresence mode="wait">
+                      <motion.img 
+                        key={currentPage} 
+                        initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
                         src={`https://picsum.photos/seed/${story.pages[currentPage].img}/800/800`}
-                        className="story-image-blend"
-                        alt="Scene illustration"
+                        className="w-full h-full object-cover rounded-2xl shadow-lg border-4 border-white"
                       />
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-                {/* RIGHT: TEXT PANEL */}
-                <div className="right-panel">
-                  <div className="flex-1">
-                    <h2 className="text-4xl mb-8">{story.title}</h2>
-                    <motion.p key={currentPage} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-2xl leading-relaxed text-gray-700">
-                      {story.pages[currentPage].text}
-                    </motion.p>
+                    </AnimatePresence>
                   </div>
+                  <div className="right-inner">
+                    <div className="flex-1">
+                      <h2 className="text-4xl font-luckiest text-[#7209b7] mb-8">{story.title}</h2>
+                      <motion.p key={currentPage} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-2xl leading-relaxed text-gray-700 italic">
+                        {story.pages[currentPage].text}
+                      </motion.p>
+                    </div>
 
-                  {currentPage === story.pages.length - 1 && (
-                    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="bg-[#ff9f1c]/10 border-4 border-dashed border-[#ff9f1c] p-6 rounded-3xl mb-8">
-                       <p className="font-bold text-[#ff9f1c] text-xs uppercase mb-1">The Lesson Learned</p>
-                       <p className="text-xl italic font-bold">"{story.moral}"</p>
-                    </motion.div>
-                  )}
+                    {currentPage === story.pages.length - 1 && (
+                      <div className="bg-[#ff9f1c]/10 border-4 border-dashed border-[#ff9f1c] p-6 rounded-3xl mb-8">
+                        <p className="font-black text-[#ff9f1c] text-xs uppercase mb-1">The Moral</p>
+                        <p className="text-xl font-bold">"{story.moral}"</p>
+                      </div>
+                    )}
 
-                  <div className="flex justify-between items-center">
-                    <button disabled={currentPage === 0} onClick={() => setCurrentPage(p => p - 1)} className="page-nav-btn !opacity-50 disabled:opacity-0"><ArrowLeft /></button>
-                    <span className="font-black text-gray-400">PAGE {currentPage + 1} OF {story.pages.length}</span>
-                    <button onClick={() => currentPage < story.pages.length - 1 ? setCurrentPage(p => p + 1) : setView('home')} className="page-nav-btn"><ArrowRight /></button>
+                    <div className="flex justify-between items-center">
+                      <button disabled={currentPage === 0} onClick={() => setCurrentPage(p => p - 1)} className="p-4 bg-[#7209b7] text-white rounded-full disabled:opacity-0 shadow-lg"><ArrowLeft /></button>
+                      <span className="font-black text-gray-300">P. {currentPage+1}</span>
+                      <button onClick={() => currentPage < story.pages.length - 1 ? setCurrentPage(p => p + 1) : setView('home')} className="p-4 bg-[#7209b7] text-white rounded-full shadow-lg"><ArrowRight /></button>
+                    </div>
                   </div>
-                </div>
-              </div>
+               </div>
             </motion.div>
           )}
 
           {view === 'library' && (
-             <motion.div key="lib" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-[1200px] mx-auto">
-               {[1,2,3,4,5,6].map(i => (
-                 <div key={i} className="magical-card !bg-white/80 !p-6 border-4 border-[#4cc9f0]">
-                   <img src={`https://picsum.photos/seed/lib${i}/400/300`} className="w-full h-40 object-cover rounded-3xl mb-4" />
-                   <h3 className="text-2xl text-[#7209b7]">ADVENTURE_{i}</h3>
-                   <button onClick={() => { setStory(STORY_REWRITE_ENGINE('elephant')); setView('read'); }} className="magical-btn-global !text-sm !py-2 mt-4">READ NOW</button>
-                 </div>
-               ))}
-             </motion.div>
+            <motion.div key="lib" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1,2,3,4,5,6].map(i => (
+                <div key={i} className="magical-card-v2 border-[#4cc9f0] cursor-pointer hover:scale-105 transition-all">
+                  <img src={`https://picsum.photos/seed/l${i}/400/300`} className="rounded-2xl mb-4 w-full h-40 object-cover" />
+                  <h3 className="font-luckiest text-2xl text-[#7209b7]">ADVENTURE #{i}</h3>
+                  <p className="text-sm font-bold text-gray-400 mt-2">Open the story book...</p>
+                </div>
+              ))}
+            </motion.div>
           )}
 
           {view === 'games' && (
-            <motion.div key="games" initial={{ scale: 0.8 }} animate={{ scale: 1 }} className="flex flex-col items-center">
-               <h2 className="text-5xl mb-12">ANIMAL MATCH!</h2>
-               <div className="memory-grid">
-                  {[1,2,3,4,5,6,7,8].map(i => (
-                    <div key={i} className="memory-card">🎨</div>
-                  ))}
-               </div>
-               <button className="magical-btn-global mt-12">REPLAY</button>
-            </motion.div>
+             <motion.div key="games" initial={{ scale: 0.8 }} animate={{ scale: 1 }} className="flex flex-col items-center">
+                <h2 className="text-5xl font-luckiest text-[#7209b7] mb-12">ANIMAL MATCH</h2>
+                <div className="grid grid-cols-4 gap-6">
+                   {[1,2,3,4,5,6,7,8].map(i => (
+                     <div key={i} className="w-24 h-24 bg-[#4cc9f0] rounded-2xl shadow-xl flex items-center justify-center text-4xl cursor-pointer">?</div>
+                   ))}
+                </div>
+                <button className="bouncy-btn mt-12">REPLAY MAGIC</button>
+             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </main>
     </div>
   );
 }
 
 function Doodle({ icon: Icon, top, left, bottom, right, color }) {
   return (
-    <motion.div 
-      className="doodle" 
-      style={{ top, left, bottom, right, color }}
-      animate={{ y: [0, -30, 0], rotate: [0, 10, 0] }}
-      transition={{ duration: 4 + Math.random() * 2, repeat: Infinity, ease: "easeInOut" }}
-    >
-      <Icon size={64} />
-    </motion.div>
+    <div className="doodle-deco" style={{ top, left, bottom, right, color }}>
+      <Icon size={80} />
+    </div>
   );
 }

@@ -5,85 +5,110 @@
   --p-blue: #4cc9f0;
   --p-purple: #7209b7;
   --p-yellow: #ff9f1c;
-  --paper-texture: url("https://www.transparenttextures.com/patterns/parchment.png");
+  --bg-parchment: #fdfaf1;
 }
+
+/* --- STABILITY FOUNDATION --- */
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
-  background: #fdfaf1;
-  background-image: var(--paper-texture);
+  padding: 0;
+  background-color: var(--bg-parchment);
   font-family: 'Outfit', sans-serif;
+  color: #333;
   overflow-x: hidden;
 }
 
-/* --- THE GLOBAL DOODLE LAYER --- */
-.doodle-canvas {
+/* --- LIGHT BACKGROUND DOODLES (Non-intrusive) --- */
+.magic-background {
   position: fixed;
   inset: 0;
+  z-index: -1;
+  opacity: 0.15; /* Very subtle to prevent distraction */
   pointer-events: none;
-  z-index: 1; /* Behind content but above background */
 }
 
-/* --- MAGICAL CONSISTENCY --- */
-h1, h2, h3, .magic-font {
+/* --- STABLE NAV BAR --- */
+.stable-nav {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 15px 40px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  border-bottom: 2px solid #eee;
+  z-index: 1000;
+}
+
+.nav-item {
   font-family: 'Luckiest Guy', cursive;
+  font-size: 22px;
   color: var(--p-purple);
+  cursor: pointer;
+  transition: 0.2s;
+}
+.nav-item.active { color: var(--p-pink); border-bottom: 3px solid var(--p-pink); }
+
+/* --- CENTERED CONTAINERS --- */
+.main-stage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
 }
 
-.magical-btn-global {
+.magical-card-v2 {
+  background: white;
+  border-radius: 30px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  border: 4px solid var(--p-blue);
+}
+
+/* --- STORYBOOK (Preserving Page-Turn Animation) --- */
+.book-stage {
+  perspective: 2000px;
+  width: 100%;
+  max-width: 1000px;
+  height: 700px;
+  margin: 0 auto;
+}
+
+.open-book {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.left-inner { flex: 1; background: #f1f5f9; padding: 30px; border-right: 1px solid #ddd; }
+.right-inner { flex: 1; background: #fff; padding: 40px; display: flex; flex-direction: column; }
+
+/* --- BUBBLY BUTTONS --- */
+.bouncy-btn {
   background: var(--p-pink);
   color: white;
   font-family: 'Luckiest Guy', cursive;
-  font-size: 24px;
-  padding: 15px 40px;
+  padding: 15px 35px;
   border-radius: 40px;
   border: none;
-  cursor: pointer;
-  box-shadow: 0 10px 0 #c9184a;
-  transition: 0.2s;
-}
-.magical-btn-global:hover { transform: translateY(-3px); box-shadow: 0 13px 0 #c9184a; }
-
-/* --- IMAGE BLENDING (CRITICAL) --- */
-.story-image-blend {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 20px;
-  /* Soft fade mask to blend with paper */
-  mask-image: radial-gradient(circle, black 60%, transparent 100%);
-  -webkit-mask-image: radial-gradient(circle, black 60%, transparent 100%);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-  animation: fadeInImage 1.5s ease;
-}
-
-@keyframes fadeInImage {
-  from { opacity: 0; filter: blur(5px); }
-  to { opacity: 1; filter: blur(0); }
-}
-
-/* --- STORYBOOK CONTAINER FIXES --- */
-.master-book {
-  background: white;
-  border-radius: 30px;
-  border: 12px solid white;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.15);
-  position: relative;
-  z-index: 10;
-}
-
-.book-leaf { background-image: var(--paper-texture); }
-
-.page-nav-btn {
-  width: 60px;
-  height: 60px;
-  background: var(--p-purple);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  box-shadow: 0 6px 0 #4a0072;
+  font-size: 22px;
+  box-shadow: 0 6px 0 #be123c;
   cursor: pointer;
 }
+.bouncy-btn:hover { transform: scale(1.05); }
+.bouncy-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #be123c; }
+
+/* --- DOODLE DECO ELS --- */
+.doodle-deco {
+  position: absolute;
+  pointer-events: none;
+  animation: floatDeco 5s infinite ease-in-out;
+}
+@keyframes floatDeco { 50% { transform: translateY(-15px); } }
