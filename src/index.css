@@ -1,187 +1,187 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Lexend:wght@300;400;600&display=swap');
 
 :root {
-  --dream-blue: #a2d2ff;
-  --dream-purple: #cdb4db;
-  --dream-pink: #ffafcc;
-  --dream-yellow: #ffea00;
-  --glass-white: rgba(255, 255, 255, 0.4);
+  --storybook-bg: #fdfcf0; /* Warm paper color */
+  --primary-blue: #4cc9f0;
+  --soft-pink: #ff85a1;
+  --magic-gold: #ffb703;
+  --text-main: #2b2d42;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Outfit', sans-serif;
+  background-color: var(--storybook-bg);
+  background-image: 
+    radial-gradient(#e5e5f7 0.5px, transparent 0.5px),
+    radial-gradient(#e5e5f7 0.5px, var(--storybook-bg) 0.5px);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+  font-family: 'Lexend', sans-serif;
+  color: var(--text-main);
   overflow-x: hidden;
-  background: linear-gradient(180deg, #1d2b64 0%, #f8cdda 100%);
-  min-height: 100vh;
-  color: #2b2d42;
 }
 
-/* --- THE ROCKET (Uiverse) --- */
-.rocket {
-  position: fixed;
-  bottom: 10%;
-  right: 5%;
-  width: 50px;
-  z-index: 100;
-  filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
-}
-.rocket .rocket-body {
-  width: 50px;
-  animation: bounce 0.5s infinite;
-}
-.rocket .rocket-body .body {
-  background-color: #f3f3f3;
-  height: 100px;
-  border-top-right-radius: 100%;
-  border-top-left-radius: 100%;
-  border-bottom-left-radius: 50%;
-  border-bottom-right-radius: 50%;
-  border-top: 3px solid #fff;
-}
-.rocket .window {
-  position: absolute;
-  width: 25px;
-  height: 25px;
-  border-radius: 100%;
-  background-color: var(--dream-blue);
-  left: 12px;
-  top: 25px;
-  border: 3px solid #ccc;
-}
-.rocket .fin {
-  position: absolute;
-  z-index: -1;
-  height: 35px;
-  width: 30px;
-  background-color: var(--dream-pink);
-}
-.rocket .fin-left { left: -15px; top: 60px; border-top-left-radius: 80%; }
-.rocket .fin-right { right: -15px; top: 60px; border-top-right-radius: 80%; }
-.rocket .exhaust-flame {
-  position: absolute;
-  top: 90%;
-  width: 16px;
-  background: linear-gradient(to bottom, transparent 10%, #fff 100%);
-  height: 80px;
-  left: 17px;
-  animation: exhaust 0.2s infinite;
+/* --- THE ELITE HUB (Fixed Width Column) --- */
+.storybook-hub {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 60px 20px 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 }
 
-/* --- DREAMY CONTAINERS --- */
-.dream-card {
-  background: var(--glass-white);
-  backdrop-filter: blur(15px);
-  border-radius: 40px;
-  border: 4px solid #fff;
-  padding: 30px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
+/* --- PREMIUM HEADINGS --- */
+.heading-elite {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  text-align: center;
+  background: linear-gradient(135deg, #4361ee, #4cc9f0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.05));
 }
 
-.cloud-input {
-  width: 100%;
-  background: #fff;
-  border: none;
-  padding: 25px;
-  border-radius: 50px;
+.subheading-elite {
+  font-family: 'Fredoka', sans-serif;
   font-size: 18px;
-  box-shadow: 0 10px 30px rgba(162, 210, 255, 0.4);
-  outline: none;
-  font-family: inherit;
+  color: var(--soft-pink);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
+  margin-top: -10px;
 }
 
-.dream-button {
-  background: linear-gradient(45deg, var(--dream-pink), var(--dream-purple));
-  color: white;
-  padding: 20px 40px;
-  border-radius: 50px;
-  border: none;
-  font-weight: 800;
+/* --- STORY CONTAINERS --- */
+.story-page {
+  background: white;
+  border-radius: 40px;
+  border: 10px solid #fff;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+  overflow: hidden;
+  transition: transform 0.4s;
+}
+
+.image-frame {
+  width: 100%;
+  aspect-ratio: 16/10;
+  background: #f0f4f8;
+  overflow: hidden;
+}
+
+.image-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.text-frame {
+  padding: 40px;
   font-size: 20px;
+  line-height: 1.8;
+  color: #4a4e69;
+  font-weight: 400;
+}
+
+/* --- THE ROCKET BRANDING --- */
+.brand-rocket {
+  width: 80px;
+  margin: 0 auto;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(5deg); }
+  50% { transform: translateY(-20px) rotate(-5deg); }
+}
+
+/* --- INTERACTIVE ELEMENTS --- */
+.input-group {
+  position: relative;
+  background: white;
+  padding: 20px;
+  border-radius: 40px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  border: 2px solid #eee;
+}
+
+.premium-input {
+  width: 100%;
+  border: none;
+  font-family: 'Lexend', sans-serif;
+  font-size: 18px;
+  outline: none;
+  padding: 10px;
+  text-align: center;
+}
+
+.action-btn {
+  background: linear-gradient(135deg, #f72585, #7209b7);
+  color: white;
+  border: none;
+  padding: 20px;
+  border-radius: 30px;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
   cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-  box-shadow: 0 10px 20px rgba(255, 175, 204, 0.3);
-}
-.dream-button:hover {
-  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 10px 20px rgba(114, 9, 183, 0.2);
+  transition: 0.3s;
 }
 
-/* --- ANIMATIONS --- */
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-@keyframes exhaust {
-  0% { transform: scaleY(1); opacity: 0.8; }
-  100% { transform: scaleY(1.2); opacity: 1; }
+.action-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 15px 30px rgba(114, 9, 183, 0.3);
 }
 
-/* --- NAV DOCK --- */
-.dream-nav {
+/* --- THE MORAL PLAQUE --- */
+.moral-plaque {
+  background: #ffb703;
+  padding: 40px;
+  border-radius: 40px;
+  text-align: center;
+  color: #fff;
+  font-weight: 600;
+  font-size: 24px;
+  border-bottom: 8px solid #cc9200;
+}
+
+/* --- NAV HUB --- */
+.nav-dock-elite {
   position: fixed;
-  bottom: 20px;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  padding: 10px 30px;
-  border-radius: 60px;
+  background: #fff;
+  padding: 15px 40px;
+  border-radius: 100px;
   display: flex;
-  gap: 30px;
-  border: 2px solid #fff;
+  gap: 40px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
   z-index: 1000;
 }
 
-.nav-item {
+.nav-link {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
-  color: var(--dream-blue);
-  cursor: pointer;
+  gap: 4px;
+  color: #adb5bd;
+  text-decoration: none;
+  font-size: 10px;
   font-weight: 800;
-  font-size: 12px;
-  transition: 0.3s;
-}
-.nav-item.active {
-  color: var(--dream-pink);
-  transform: scale(1.2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-/* --- STORY STYLING --- */
-.story-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-}
-
-.story-img-wrapper {
-  width: 250px;
-  height: 250px;
-  border-radius: 100px 30px 100px 30px;
-  overflow: hidden;
-  border: 8px solid #fff;
-  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-}
-
-.story-text {
-  font-size: 22px;
-  line-height: 1.6;
-  text-align: center;
-  color: #4a4e69;
-}
-
-.moral-bubble {
-  background: var(--dream-yellow);
-  padding: 30px;
-  border-radius: 40px;
-  position: relative;
-  margin-top: 40px;
-  box-shadow: 0 10px 0 #ecca2f;
-  font-weight: 800;
-  font-style: italic;
-  font-size: 24px;
+.nav-link.active {
+  color: #4361ee;
 }
