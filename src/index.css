@@ -1,183 +1,141 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Lexend:wght@300;400;600&display=swap');
 
 :root {
-  --magic-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --book-bg: #fffcf0;
+  --primary: #ff85a1;
+  --secondary: #4cc9f0;
   --gold: #ffb703;
+  --glass: rgba(255, 255, 255, 0.15);
 }
 
 body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow-x: hidden;
   font-family: 'Lexend', sans-serif;
-  background: #0f0c29;
-  background: linear-gradient(to bottom, #24243e, #302b63, #0f0c29);
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
   color: white;
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
 }
 
-/* --- THE DREAM PORTAL (Home) --- */
-.home-portal {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 20px;
-}
-
-.portal-wand {
-  font-size: 80px;
-  filter: drop-shadow(0 0 20px var(--gold));
-  margin-bottom: 20px;
-  animation: float 4s ease-in-out infinite;
-}
-
-.input-magic-container {
+/* --- THE PERSISTENT NAVBAR --- */
+.kids-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px);
-  padding: 10px;
-  border-radius: 100px;
-  border: 4px solid rgba(255, 255, 255, 0.2);
-  width: 100%;
-  max-width: 500px;
+  z-index: 2000;
   display: flex;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-  transition: 0.3s;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-.input-magic-container:focus-within {
-  border-color: var(--gold);
-  transform: scale(1.05);
+.nav-links {
+  display: flex;
+  gap: 30px;
 }
 
-.magic-input {
-  flex: 1;
+.nav-btn {
   background: transparent;
   border: none;
   color: white;
-  padding: 20px 30px;
-  font-size: 20px;
-  outline: none;
   font-family: 'Fredoka', sans-serif;
-}
-
-.magic-btn {
-  background: var(--gold);
-  border: none;
-  border-radius: 100px;
-  padding: 0 40px;
-  color: #333;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 16px;
-  cursor: pointer;
-  text-transform: uppercase;
-}
-
-/* --- THE STORYBOOK (Reader) --- */
-.book-container {
-  perspective: 2000px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
-  padding: 40px;
-}
-
-.book {
-  width: 900px;
-  height: 600px;
-  position: relative;
-  transition: transform 0.5s;
-  background: var(--book-bg);
-  border-radius: 15px;
-  box-shadow: 0 30px 100px rgba(0,0,0,0.5);
-  display: flex;
-  overflow: hidden;
-  color: #2b2d42;
-}
-
-.book-left {
-  flex: 1;
-  border-right: 2px solid rgba(0,0,0,0.1);
-  position: relative;
-  background: #fdfaf0;
-}
-
-.book-right {
-  flex: 1;
-  position: relative;
-  background: #fff;
-}
-
-.page-content {
-  padding: 50px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.page-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-}
-
-.story-heading {
-  font-family: 'Fredoka', sans-serif;
-  font-size: 32px;
-  color: #764ba2;
-  margin-bottom: 20px;
-}
-
-.story-body {
-  font-size: 22px;
-  line-height: 1.8;
-  color: #444;
-}
-
-/* --- CONTROLS --- */
-.book-nav {
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 20px;
-  z-index: 100;
-}
-
-.nav-circle {
-  width: 60px;
-  height: 60px;
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  gap: 8px;
   cursor: pointer;
-  border: 2px solid rgba(255,255,255,0.2);
+  transition: 0.3s;
+  padding: 10px 20px;
+  border-radius: 50px;
+}
+
+.nav-btn:hover, .nav-btn.active {
+  background: var(--primary);
+  transform: translateY(-2px);
+}
+
+/* --- ROCKET & STARS RESTORATION --- */
+.rocket-fly {
+  position: fixed;
+  bottom: 100px;
+  right: 50px;
+  width: 80px;
+  z-index: 5;
+  animation: rocket-float 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes rocket-float {
+  0%, 100% { transform: translateY(0) rotate(5deg); }
+  50% { transform: translateY(-40px) rotate(-5deg); }
+}
+
+.star-field {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* --- GAME ZONE --- */
+.game-card {
+  background: var(--glass);
+  border-radius: 30px;
+  padding: 30px;
+  text-align: center;
+  border: 4px solid rgba(255, 255, 255, 0.1);
   transition: 0.3s;
 }
 
-.nav-circle:hover { background: var(--gold); color: #333; }
+.game-card:hover { transform: scale(1.05); border-color: var(--gold); }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+/* --- THE BOOK & HOME (Restored Balance) --- */
+.main-wrapper {
+  padding-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
 }
 
-/* --- THE MORAL PAGE --- */
-.moral-overlay {
-  background: var(--gold);
-  color: white;
-  text-align: center;
+.magic-input-box {
+  background: var(--glass);
   padding: 40px;
-  border-radius: 20px;
+  border-radius: 50px;
+  border: 4px solid var(--primary);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  max-width: 600px;
+  width: 90%;
+}
+
+.blended-book-frame {
+  background: white;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 30px 100px rgba(0,0,0,0.6);
+  max-width: 1000px;
+  width: 95%;
+  display: flex;
+  color: #333;
+}
+
+.book-img-side {
+  flex: 1;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book-text-side {
+  flex: 1;
+  padding: 60px;
+  background: #fdfcf0;
+  position: relative;
 }
