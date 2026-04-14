@@ -16,19 +16,25 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--bg-dark);
+  background-color: #0a0a0b; /* Guaranteed dark background */
   color: white;
   font-family: 'Plus Jakarta Sans', sans-serif;
   overflow: hidden;
   height: 100vh;
   width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .mobile-container {
   height: 100vh;
-  width: 100%;
+  width: 100vw;
   max-width: 430px;
-  margin: 0 auto;
+  background: #0a0a0b;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 100px rgba(0,0,0,0.5);
 }
 
 /* Custom Scrollbar for Luxury Peek */

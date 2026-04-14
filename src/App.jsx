@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, BookOpen, Compass, Settings, Sparkles, Send, Quote, Trophy, History } from 'lucide-react';
+import { Home, BookOpen, Compass, Settings, Sparkles, Send, Quote, Trophy, History, Volume2, VolumeX } from 'lucide-react';
 
-// --- DEEP STORY ENGINE ---
 const STORY_TEMPLATES = [
   {
     theme: "Wisdom",
@@ -56,50 +55,53 @@ export default function App() {
     }, 4500);
   };
 
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.muted = isMuted;
+      if (!isMuted) audioRef.current.play().catch(() => {});
+      else audioRef.current.pause();
+    }
+  }, [isMuted]);
+
   return (
-    <div className="mobile-container overflow-hidden">
+    <div className="mobile-container">
       <audio ref={audioRef} src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" loop />
       
-      {/* Dynamic Background */}
-      <div className="fixed inset-0 bg-[#0a0a0b] -z-10">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-blue-600/10 blur-[100px] rounded-full" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-600/10 blur-[100px] rounded-full" />
-      </div>
+      {/* Background */}
+      <div className="fixed inset-0 bg-[#0a0a0b] -z-10" />
 
-      <div className="h-full flex flex-col max-w-[430px] mx-auto bg-white/5 backdrop-blur-xl border-x border-white/10 shadow-2xl relative">
+      <div className="h-full flex flex-col w-full relative">
         
         {/* Header */}
-        <header className="px-6 pt-12 pb-6 flex justify-between items-center">
+        <header className="px-6 pt-12 pb-6 flex justify-between items-center z-10">
           <div>
             <h1 className="text-2xl font-bold text-white tracking-tight">ManVachan</h1>
-            <p className="text-xs text-white/40 uppercase tracking-widest font-bold">V-1.0 Heritage OS</p>
+            <p className="text-xs text-blue-500 uppercase tracking-widest font-bold">V-1.0 Heritage</p>
           </div>
           <button onClick={() => setIsMuted(!isMuted)} className="p-3 bg-white/5 rounded-full border border-white/10">
             {isMuted ? <VolumeX className="text-white/40" /> : <Volume2 className="text-blue-400" />}
           </button>
         </header>
 
-        <main className="flex-1 overflow-y-auto px-6 pb-24 custom-scroll">
+        <main className="flex-1 overflow-y-auto px-6 pb-24 custom-scroll z-10">
           <AnimatePresence mode="wait">
             {activeTab === 'home' && (
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-8">
-                {/* Daily Quote Card */}
-                <div className="p-6 bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-[32px] border border-white/10 space-y-4">
+              <motion.div key="home" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-8">
+                <div className="p-6 bg-blue-600/10 rounded-[32px] border border-blue-500/20 space-y-4">
                   <Quote className="text-blue-400" />
-                  <p className="text-lg text-white font-medium leading-relaxed italic">
+                  <p className="text-lg text-white font-medium italic">
                     "The journey of a thousand miles begins with a single thought."
                   </p>
                 </div>
 
-                {/* Input Section */}
                 <div className="space-y-4">
-                  <h3 className="text-sm font-bold text-white/60 uppercase tracking-widest">Create New Lore</h3>
+                  <h3 className="text-sm font-bold text-white/40 uppercase tracking-widest">Create New Lore</h3>
                   <div className="relative group">
                     <textarea 
                       value={prompt}
                       onChange={(e) => setPrompt(e.target.value)}
-                      placeholder="Describe your hero or theme..."
-                      className="w-full bg-white/5 border border-white/10 rounded-3xl p-6 text-white text-lg min-h-[180px] outline-none focus:border-blue-500/50 transition-all"
+                      placeholder="Describe your theme..."
+                      className="w-full bg-white/5 border border-white/10 rounded-3xl p-6 text-white text-lg min-h-[180px] outline-none focus:border-blue-500/50 transition-all font-medium"
                     />
                     <button 
                       onClick={generateDeepStory}
@@ -111,16 +113,15 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Library/Stats */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-5 bg-white/5 rounded-3xl border border-white/10 text-center space-y-2">
-                    <History className="mx-auto text-purple-400" />
+                    <History className="mx-auto text-blue-400" />
                     <p className="text-xl font-bold text-white">12</p>
-                    <p className="text-xs text-white/40 font-bold uppercase">Tales Read</p>
+                    <p className="text-xs text-white/40 font-bold uppercase">Tales</p>
                   </div>
                   <div className="p-5 bg-white/5 rounded-3xl border border-white/10 text-center space-y-2">
                     <Trophy className="mx-auto text-amber-400" />
-                    <p className="text-xl font-bold text-white">Expert</p>
+                    <p className="text-xl font-bold text-white">Zen</p>
                     <p className="text-xs text-white/40 font-bold uppercase">Rank</p>
                   </div>
                 </div>
@@ -128,9 +129,9 @@ export default function App() {
             )}
 
             {activeTab === 'read' && story && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-12">
+              <motion.div key="read" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-12 pb-20">
                 <header className="text-center">
-                  <h2 className="text-3xl font-black text-white italic tracking-tighter">{story.title}</h2>
+                  <h2 className="text-3xl font-bold text-white italic tracking-tighter">{story.title}</h2>
                   <div className="w-12 h-1 bg-blue-500 mx-auto mt-4 rounded-full" />
                 </header>
 
@@ -142,18 +143,15 @@ export default function App() {
                     viewport={{ once: true }}
                     className="space-y-6"
                   >
-                    <div className="rounded-[40px] overflow-hidden border border-white/10 shadow-2xl scale-[1.02]">
+                    <div className="rounded-[40px] overflow-hidden border border-white/10 shadow-2xl">
                       <img src={scene.image} className="w-full aspect-square object-cover" alt="scene" />
                     </div>
-                    <p className="text-xl leading-relaxed text-white/90 font-medium">
-                      {scene.text}
-                    </p>
+                    <p className="text-xl leading-relaxed text-white/90 font-medium">{scene.text}</p>
                   </motion.div>
                 ))}
 
                 <div className="p-8 bg-blue-500/10 border-2 border-dashed border-blue-500/30 rounded-[40px] text-center space-y-4">
-                  <Sparkles className="mx-auto text-blue-400" size={32} />
-                  <h4 className="text-blue-400 font-bold uppercase tracking-widest text-sm">The Moral of the Lore</h4>
+                  <h4 className="text-blue-400 font-bold uppercase tracking-widest text-xs">The Moral</h4>
                   <p className="text-2xl text-white font-bold italic">"{story.moral}"</p>
                 </div>
               </motion.div>
@@ -161,10 +159,9 @@ export default function App() {
           </AnimatePresence>
         </main>
 
-        {/* Bottom Navigation */}
-        <nav className="fixed bottom-0 left-0 right-0 max-w-[430px] mx-auto h-24 px-8 flex justify-between items-center bg-black/60 backdrop-blur-3xl border-t border-white/10">
+        <nav className="fixed bottom-0 left-0 right-0 max-w-[430px] mx-auto h-24 px-8 flex justify-between items-center bg-black/80 backdrop-blur-3xl border-t border-white/10 z-20">
           <TabButton active={activeTab === 'home'} icon={Home} label="Home" onClick={() => setActiveTab('home')} />
-          <TabButton active={activeTab === 'read'} icon={BookOpen} label="Reader" onClick={() => story && setActiveTab('read')} disabled={!story} />
+          <TabButton active={activeTab === 'read'} icon={BookOpen} label="Read" onClick={() => story && setActiveTab('read')} disabled={!story} />
           <TabButton active={activeTab === 'explore'} icon={Compass} label="Explore" onClick={() => {}} />
           <TabButton active={activeTab === 'settings'} icon={Settings} label="User" onClick={() => {}} />
         </nav>
