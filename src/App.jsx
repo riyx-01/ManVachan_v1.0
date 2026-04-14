@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Book, Home, Telescope, Settings, Heart, Send, Volume2, VolumeX } from 'lucide-react';
+import { Book, Home, Settings, Search, Volume2, VolumeX, Sparkles, Heart } from 'lucide-react';
 
 // --- SEMANTIC STORY BUILDER ---
 const buildAdventure = (seed) => {
@@ -9,23 +9,23 @@ const buildAdventure = (seed) => {
     title: `The Great Journey of ${hero}`,
     scenes: [
       {
-        text: `In a world made of soft colors and gentle winds, ${hero} lived a very happy life. But ${hero} always had a curious heart, wondering what lay beyond the Great Sparkling River. One sunny morning, with a bag full of courage, the journey began.`,
+        text: `In a world made of soft colors and gentle winds, ${hero} lived a very happy life. But ${hero} always had a curious heart, wondering what lay beyond the Great Sparkling River.`,
         image: `https://loremflickr.com/800/500/${seed},landscape`
       },
       {
-        text: `As ${hero} walked through the Whispering Woods, the trees began to hum a sweet melody. A small problem appeared: a bridge made of rainbows had lost its colors! ${hero} knew that only a truly brave heart could help the rainbow shine again.`,
+        text: `As ${hero} walked through the Whispering Woods, the trees began to hum a sweet melody. A small problem appeared: a bridge made of rainbows had lost its colors!`,
         image: `https://loremflickr.com/800/500/${seed},forest`
       },
       {
-        text: `By sharing a story and a warm smile, ${hero} helped the bridge glow once more. Crossing over, ${hero} found a field of golden sunflowers that matched the sunlight. The world felt bigger and more beautiful than ever before.`,
+        text: `By sharing a story and a warm smile, ${hero} helped the bridge glow once more. Crossing over, ${hero} found a field of golden sunflowers that matched the sunlight.`,
         image: `https://loremflickr.com/800/500/${seed},magic`
       },
       {
-        text: `Returning home at sunset, ${hero} realized that the greatest adventure wasn't just the places seen, but the kindness shared along the way. The village gathered around to hear the tales of the brave traveler who brought the rainbow back to life.`,
+        text: `Returning home at sunset, ${hero} realized that the greatest adventure wasn't just the places seen, but the kindness shared along the way.`,
         image: `https://loremflickr.com/800/500/${seed},sunset`
       }
     ],
-    moral: `True bravery is found in kindness, and the best adventures are those we share with others.`
+    moral: `True bravery is found in kindness, and the best adventures are those we share.`
   };
 };
 
@@ -34,129 +34,140 @@ export default function App() {
   const [inputTerm, setInputTerm] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [activeStory, setActiveStory] = useState(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef(null);
+
+  useEffect(() => {
+    document.body.className = isDarkMode ? 'night-mode' : 'day-mode';
+  }, [isDarkMode]);
 
   const startTelling = () => {
     if (!inputTerm.trim()) return;
     setIsGenerating(true);
     setTimeout(() => {
-      const story = buildAdventure(inputTerm);
-      setActiveStory(story);
+      setActiveStory(buildAdventure(inputTerm));
       setIsGenerating(false);
       setView('read');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0 });
     }, 3500);
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
       <audio ref={audioRef} src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" loop />
       
-      <div className="storybook-hub">
+      {/* --- DREAMY BACKGROUND ELEMENTS --- */}
+      <div className="rocket-env">
+        <div className="rocket-body">
+          <div className="body"></div>
+          <div className="rocket-window"></div>
+        </div>
+      </div>
+
+      <label className="theme-switch">
+        <input 
+          type="checkbox" 
+          className="theme-switch__checkbox" 
+          checked={isDarkMode}
+          onChange={() => setIsDarkMode(!isDarkMode)}
+        />
+        <div className="theme-switch__container">
+          <div className="theme-switch__sun-moon-container"></div>
+        </div>
+      </label>
+
+      {/* --- MAIN COLUMN --- */}
+      <div className="app-column">
         <AnimatePresence mode="wait">
           {view === 'home' && (
-            <motion.div key="home" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-12">
-              <header className="space-y-4">
-                <div className="brand-rocket">
-                   <svg viewBox="0 0 24 24" fill="#ff85a1" className="w-full h-full">
-                     <path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75-4.365-9.75-9.75-9.75zm0 18c-4.557 0-8.25-3.693-8.25-8.25s3.693-8.25 8.25-8.25 8.25 3.693 8.25 8.25-3.693 8.25-8.25 8.25z" />
-                     <path d="M12 6.75a.75.75 0 01.75.75v3h3a.75.75 0 010 1.5h-3v3a.75.75 0 01-1.5 0v-3h-3a.75.75 0 010-1.5h3v-3a.75.75 0 01.75-.75z" />
-                   </svg>
-                </div>
-                <h1 className="heading-elite">ManVachan</h1>
-                <p className="subheading-elite">A Masterpiece for Every Child</p>
+            <motion.div key="home" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-10">
+              <header className="text-center pt-10">
+                <h1 className="elite-title">ManVachan</h1>
+                <p className="font-bold text-sm tracking-widest opacity-40">STORYBOOK v1.0</p>
               </header>
 
-              <div className="space-y-8 text-center">
-                 <div className="input-group">
-                    <input 
-                      type="text" 
-                      value={inputTerm}
-                      onChange={(e) => setInputTerm(e.target.value)}
-                      placeholder="Who shall we write about?" 
-                      className="premium-input"
-                    />
-                 </div>
-                 <button 
+              <div className="premium-card text-center space-y-8">
+                <div className="space-y-4">
+                  <p className="font-black text-sm uppercase opacity-50">Who is our Hero?</p>
+                  <input 
+                    type="text" 
+                    value={inputTerm}
+                    onChange={(e) => setInputTerm(e.target.value)}
+                    placeholder="Enter hero name..." 
+                    className="w-full text-center border-b-2 bg-transparent border-current outline-none text-2xl font-medium py-2"
+                  />
+                </div>
+                
+                <button 
                   onClick={startTelling}
                   disabled={!inputTerm.trim() || isGenerating}
-                  className="action-btn w-full"
-                 >
-                   {isGenerating ? "CRAFTING YOUR MASTERPIECE..." : "GENERATE STORY"}
-                 </button>
+                  className="premium-btn w-full"
+                >
+                  {isGenerating ? "CRAFTING..." : "LAUNCH ADVENTURE"}
+                </button>
               </div>
 
-              <div className="grid grid-cols-1 gap-6">
-                 <div className="story-page p-8 flex items-center justify-between">
-                    <div>
-                      <p className="font-bold text-lg">Pick a Classic</p>
-                      <p className="text-sm text-gray-400">Read our curated heritage tales</p>
-                    </div>
+              <div className="grid grid-cols-2 gap-4">
+                 <div className="premium-card !p-6 flex flex-col items-center gap-2">
                     <Book className="text-[#4361ee]" />
+                    <span className="font-black text-xs">LIBRARY</span>
+                 </div>
+                 <div className="premium-card !p-6 flex flex-col items-center gap-2">
+                    <History className="text-[#ff85a1]" />
+                    <span className="font-black text-xs">HISTORY</span>
                  </div>
               </div>
             </motion.div>
           )}
 
           {view === 'read' && activeStory && (
-            <motion.div key="read" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-16">
+            <motion.div key="read" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-12 pb-24">
               <header className="text-center py-10">
-                 <p className="subheading-elite mb-4">You are Reading</p>
-                 <h2 className="heading-elite">{activeStory.title}</h2>
-                 <div className="mt-4 flex justify-center gap-2">
-                    <Sparkles className="text-yellow-400" size={20} />
-                    <Sparkles className="text-yellow-400" size={20} />
-                    <Sparkles className="text-yellow-400" size={20} />
-                 </div>
+                 <h2 className="elite-title">{activeStory.title}</h2>
+                 <div className="flex justify-center gap-2 mt-4 text-yellow-400"><Sparkles /><Sparkles /><Sparkles /></div>
               </header>
 
               {activeStory.scenes.map((scene, i) => (
-                <div key={i} className="story-page">
-                   <div className="image-frame">
-                      <img src={scene.image} alt="Story scene" />
-                   </div>
-                   <div className="text-frame">
+                <div key={i} className="premium-card !p-0 overflow-hidden">
+                   <img src={scene.image} className="w-full aspect-[16/10] object-cover" alt="scene" />
+                   <div className="p-10 story-text">
                       {scene.text}
                    </div>
                 </div>
               ))}
 
-              <div className="moral-plaque">
-                 <Heart className="mx-auto mb-4" size={40} fill="#fff" />
-                 <p className="text-sm uppercase tracking-widest opacity-80 mb-2">The Lesson of Life</p>
-                 <p>"{activeStory.moral}"</p>
+              <div className="premium-card !bg-[#ffb703] !text-white text-center italic">
+                 <Heart className="mx-auto mb-4" size={40} fill="white" />
+                 <p className="text-2xl font-bold">"{activeStory.moral}"</p>
               </div>
-              
-              <button 
-                onClick={() => setView('home')}
-                className="action-btn w-full"
-              >
-                BACK TO HOME
-              </button>
+
+              <button onClick={() => setView('home')} className="premium-btn w-full">BACK TO HUB</button>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      <nav className="nav-dock-elite">
-         <div onClick={() => setView('home')} className={`nav-link ${view === 'home' ? 'active' : ''}`}>
-           <Home size={24} />
-           <span>HOME</span>
-         </div>
-         <div onClick={() => activeStory && setView('read')} className={`nav-link ${view === 'read' ? 'active' : ''} ${!activeStory ? 'opacity-20' : ''}`}>
-           <Book size={24} />
-           <span>BOOK</span>
-         </div>
-         <div className="nav-link">
-           <Telescope size={24} />
-           <span>FIND</span>
-         </div>
-         <div className="nav-link" onClick={() => setIsMuted(!isMuted)}>
-           {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
-           <span>{isMuted ? 'MUTE' : 'PLAY'}</span>
-         </div>
+      {/* --- DOCK --- */}
+      <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-white/80 dark:bg-black/80 backdrop-blur-xl px-10 py-4 rounded-full flex gap-10 shadow-2xl z-50 border border-white/20">
+         <NavItem active={view === 'home'} icon={Home} label="HOME" onClick={() => setView('home')} />
+         <NavItem active={view === 'read'} icon={Book} label="BOOK" onClick={() => activeStory && setView('read')} />
+         <NavItem active={false} icon={Search} label="FIND" onClick={() => {}} />
+         <NavItem active={false} icon={isMuted ? VolumeX : Volume2} label={isMuted ? "SILENT" : "MUSIC"} onClick={() => setIsMuted(!isMuted)} />
       </nav>
     </div>
   );
+}
+
+function NavItem({ active, icon: Icon, label, onClick }) {
+  return (
+    <div onClick={onClick} className={`flex flex-col items-center cursor-pointer transition-all ${active ? 'text-blue-500 scale-110' : 'text-gray-400'}`}>
+       <Icon size={22} />
+       <span className="text-[10px] font-black mt-1 tracking-widest">{label}</span>
+    </div>
+  );
+}
+
+function History({ className }) {
+  return <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /><path d="M12 7v5l4 2" /></svg>;
 }

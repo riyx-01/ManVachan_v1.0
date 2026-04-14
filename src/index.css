@@ -1,187 +1,175 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Lexend:wght@300;400;600&display=swap');
 
 :root {
-  --storybook-bg: #fdfcf0; /* Warm paper color */
-  --primary-blue: #4cc9f0;
-  --soft-pink: #ff85a1;
-  --magic-gold: #ffb703;
-  --text-main: #2b2d42;
-}
-
-* {
-  box-sizing: border-box;
+  --light-bg: #fdfcf0;
+  --night-bg: #1D1F2C;
+  --text-light: #2b2d42;
+  --text-night: #fff;
+  --accent: #4cc9f0;
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--storybook-bg);
-  background-image: 
-    radial-gradient(#e5e5f7 0.5px, transparent 0.5px),
-    radial-gradient(#e5e5f7 0.5px, var(--storybook-bg) 0.5px);
+  font-family: 'Lexend', sans-serif;
+  transition: background 0.5s ease;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* --- THEME SENSITIVE BACKGROUND --- */
+body.day-mode {
+  background-color: var(--light-bg);
+  background-image: radial-gradient(#e5e5f7 0.5px, transparent 0.5px), radial-gradient(#e5e5f7 0.5px, var(--light-bg) 0.5px);
   background-size: 20px 20px;
   background-position: 0 0, 10px 10px;
-  font-family: 'Lexend', sans-serif;
-  color: var(--text-main);
-  overflow-x: hidden;
+  color: var(--text-light);
 }
 
-/* --- THE ELITE HUB (Fixed Width Column) --- */
-.storybook-hub {
-  max-width: 600px;
+body.night-mode {
+  background-color: var(--night-bg);
+  color: var(--text-night);
+}
+
+/* --- THEME SWITCH (Uiverse) --- */
+.theme-switch {
+  --toggle-size: 15px;
+  --container-width: 5.625em;
+  --container-height: 2.5em;
+  --container-radius: 6.25em;
+  --container-light-bg: #3D7EAE;
+  --container-night-bg: #1D1F2C;
+  --circle-container-diameter: 3.375em;
+  --sun-moon-diameter: 2.125em;
+  --sun-bg: #ECCA2F;
+  --moon-bg: #C4C9D1;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2000;
+}
+
+.theme-switch__container {
+  width: var(--container-width);
+  height: var(--container-height);
+  background-color: var(--container-light-bg);
+  border-radius: var(--container-radius);
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: 0.5s;
+  position: relative;
+}
+
+.theme-switch__checkbox { display: none; }
+
+.theme-switch__sun-moon-container {
+  position: absolute;
+  z-index: 2;
+  width: var(--sun-moon-diameter);
+  height: var(--sun-moon-diameter);
+  left: 3px;
+  top: 3px;
+  border-radius: 50%;
+  background-color: var(--sun-bg);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-switch__checkbox:checked + .theme-switch__container .theme-switch__sun-moon-container {
+  transform: translateX(48px);
+  background-color: var(--moon-bg);
+}
+
+/* --- ROCKET (Uiverse) --- */
+.rocket-env {
+  position: fixed;
+  top: 20%;
+  right: 10%;
+  width: 80px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+.rocket-body {
+  width: 80px;
+  animation: bounce 0.5s infinite;
+}
+
+.rocket-body .body {
+  background-color: #dadada;
+  height: 120px;
+  border-radius: 100% 100% 50% 50%;
+  border-top: 5px solid #f5f5f5;
+}
+
+.rocket-window {
+  position: absolute;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background-color: #a75248;
+  left: 25px; top: 30px;
+  border: 4px solid #b4b2b2;
+}
+
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+/* --- SITUATED CONTAINERS --- */
+.app-column {
+  max-width: 650px;
   margin: 0 auto;
-  padding: 60px 20px 120px;
+  padding: 80px 20px;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 30px;
 }
 
-/* --- PREMIUM HEADINGS --- */
-.heading-elite {
+.premium-card {
+  background: white;
+  border-radius: 35px;
+  padding: 40px;
+  box-shadow: 0 15px 45px rgba(0,0,0,0.06);
+  border: 2px solid rgba(0,0,0,0.02);
+  width: 100%;
+}
+
+.night-mode .premium-card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border-color: rgba(255,255,255,0.1);
+}
+
+/* HEADINGS & FONTS */
+.elite-title {
   font-family: 'Fredoka', sans-serif;
-  font-size: 42px;
+  font-size: 48px;
   font-weight: 700;
   text-align: center;
-  background: linear-gradient(135deg, #4361ee, #4cc9f0);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   margin: 0;
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.05));
+  color: inherit;
 }
 
-.subheading-elite {
-  font-family: 'Fredoka', sans-serif;
-  font-size: 18px;
-  color: var(--soft-pink);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  text-align: center;
-  margin-top: -10px;
-}
-
-/* --- STORY CONTAINERS --- */
-.story-page {
-  background: white;
-  border-radius: 40px;
-  border: 10px solid #fff;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.05);
-  overflow: hidden;
-  transition: transform 0.4s;
-}
-
-.image-frame {
-  width: 100%;
-  aspect-ratio: 16/10;
-  background: #f0f4f8;
-  overflow: hidden;
-}
-
-.image-frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s;
-}
-
-.text-frame {
-  padding: 40px;
-  font-size: 20px;
-  line-height: 1.8;
-  color: #4a4e69;
-  font-weight: 400;
-}
-
-/* --- THE ROCKET BRANDING --- */
-.brand-rocket {
-  width: 80px;
-  margin: 0 auto;
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(5deg); }
-  50% { transform: translateY(-20px) rotate(-5deg); }
-}
-
-/* --- INTERACTIVE ELEMENTS --- */
-.input-group {
-  position: relative;
-  background: white;
-  padding: 20px;
-  border-radius: 40px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-  border: 2px solid #eee;
-}
-
-.premium-input {
-  width: 100%;
-  border: none;
+.story-text {
   font-family: 'Lexend', sans-serif;
-  font-size: 18px;
-  outline: none;
-  padding: 10px;
-  text-align: center;
+  font-size: 19px;
+  line-height: 1.8;
+  color: inherit;
 }
 
-.action-btn {
-  background: linear-gradient(135deg, #f72585, #7209b7);
+.premium-btn {
+  background: var(--accent);
   color: white;
   border: none;
-  padding: 20px;
-  border-radius: 30px;
+  padding: 18px 30px;
+  border-radius: 25px;
   font-family: 'Fredoka', sans-serif;
   font-weight: 700;
-  font-size: 22px;
+  font-size: 20px;
   cursor: pointer;
-  box-shadow: 0 10px 20px rgba(114, 9, 183, 0.2);
+  box-shadow: 0 10px 20px rgba(76, 201, 240, 0.2);
   transition: 0.3s;
 }
 
-.action-btn:hover {
-  transform: scale(1.02);
-  box-shadow: 0 15px 30px rgba(114, 9, 183, 0.3);
-}
-
-/* --- THE MORAL PLAQUE --- */
-.moral-plaque {
-  background: #ffb703;
-  padding: 40px;
-  border-radius: 40px;
-  text-align: center;
-  color: #fff;
-  font-weight: 600;
-  font-size: 24px;
-  border-bottom: 8px solid #cc9200;
-}
-
-/* --- NAV HUB --- */
-.nav-dock-elite {
-  position: fixed;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #fff;
-  padding: 15px 40px;
-  border-radius: 100px;
-  display: flex;
-  gap: 40px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-  z-index: 1000;
-}
-
-.nav-link {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  color: #adb5bd;
-  text-decoration: none;
-  font-size: 10px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.nav-link.active {
-  color: #4361ee;
+.premium-btn:hover {
+  transform: scale(1.03);
 }
