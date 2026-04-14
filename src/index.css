@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,700;0,800;1,500&display=swap');
+
+:root {
+  --bg-dark: #0a0a0b;
+  --accent-blue: #3b82f6;
+  --accent-purple: #8b5cf6;
+  --glass: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-dark);
+  color: white;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+.mobile-container {
+  height: 100vh;
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+}
+
+/* Custom Scrollbar for Luxury Peek */
+.custom-scroll::-webkit-scrollbar {
+  width: 0px; /* Hide scrollbar for native look */
+}
+
+/* Glassmorphism Classes */
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+}
+
+/* Animations */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Typography Enhancements */
+h1, h2, h3, h4 {
+  letter-spacing: -0.02em;
+}
+
+.font-black {
+  font-weight: 800;
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+/* Image Treatment */
+img {
+  user-select: none;
+  pointer-events: none;
+}
