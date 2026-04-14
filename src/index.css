@@ -1,147 +1,159 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Lexend:wght@300;400;600&display=swap');
 
 :root {
-  --magic-border: linear-gradient(45deg, #ff85a1, #4cc9f0, #ffb703);
-  --page-bg: #fefcf3;
+  --primary: #ff85a1;
+  --secondary: #4cc9f0;
+  --gold: #ffb703;
+  --glass: rgba(255, 255, 255, 0.1);
+  --paper: #fdfcf0;
 }
 
 body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
-  background: #0f1020;
+  transition: all 0.5s ease;
   font-family: 'Lexend', sans-serif;
-  color: white;
+  overflow-x: hidden;
+  height: 100vh;
 }
 
-/* --- THE MAGIC SCROLL (Home) --- */
-.magic-portal {
-  min-height: 80vh;
+body.day-mode { background: linear-gradient(135deg, #a2d2ff, #f8cdda); color: #2b2d42; }
+body.night-mode { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); color: white; }
+
+/* --- THE PERSISTENT GLASS NAVBAR --- */
+.navbar-kids {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 90px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(25px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-links-wrap {
+  display: flex;
+  gap: 40px;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+}
+
+.nav-tab {
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 50px;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: inherit;
+  opacity: 0.7;
+}
+
+.nav-tab.active { background: var(--primary); color: white; opacity: 1; box-shadow: 0 10px 20px rgba(255, 133, 161, 0.3); }
+
+/* --- THEME SWITCHER (Uiverse Galahhad) --- */
+.theme-switch {
+  --toggle-size: 20px;
+  --container-width: 5.625em;
+  --container-height: 2.5em;
+  --container-radius: 6.25em;
+  --container-light-bg: #3D7EAE;
+  --container-night-bg: #1D1F2C;
+  --circle-container-diameter: 3.375em;
+  --sun-moon-diameter: 2.125em;
+  --sun-bg: #ECCA2F;
+  --moon-bg: #C4C9D1;
+  --spot-color: #959DB1;
+  --transition: .5s cubic-bezier(0, -0.02, 0.4, 1.25);
+  cursor: pointer;
+}
+.theme-switch__checkbox { display: none; }
+.theme-switch__container {
+  width: var(--container-width); height: var(--container-height);
+  background-color: var(--container-light-bg); border-radius: var(--container-radius);
+  position: relative; overflow: hidden; transition: var(--transition);
+}
+.theme-switch__sun-moon-container {
+  position: absolute; width: var(--sun-moon-diameter); height: var(--sun-moon-diameter);
+  background: var(--sun-bg); border-radius: 50%; left: 3px; top: 3px; transition: var(--transition);
+}
+.theme-switch__checkbox:checked + .theme-switch__container { background-color: var(--container-night-bg); }
+.theme-switch__checkbox:checked + .theme-switch__container .theme-switch__sun-moon-container {
+  transform: translateX(48px); background: var(--moon-bg);
+}
+
+/* --- THE MAGIC PORTAL HOME --- */
+.home-portal-v2 {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 40px;
+  padding-top: 100px;
 }
 
-.portal-glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(30px);
+.portal-wand-v2 {
+  font-size: 100px;
+  filter: drop-shadow(0 0 30px var(--gold));
+  animation: magic-float 4s infinite ease-in-out;
+}
+
+@keyframes magic-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
+
+.magic-input-v2 {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(40px);
   padding: 60px;
   border-radius: 60px;
-  border: 4px solid rgba(255, 255, 255, 0.1);
+  border: 4px solid var(--primary);
+  width: 90%; max-width: 800px;
+  text-align: center;
   box-shadow: 0 40px 100px rgba(0,0,0,0.5);
-  max-width: 800px;
-  width: 100%;
 }
 
-.portal-input-wrap {
-  position: relative;
-  margin: 40px 0;
-}
-
-.portal-input {
-  width: 100%;
-  background: rgba(255,255,255,0.1);
-  border: 4px solid transparent;
-  padding: 25px 40px;
-  border-radius: 100px;
-  color: white;
-  font-size: 24px;
-  font-family: 'Fredoka', sans-serif;
-  outline: none;
-  transition: 0.4s;
-}
-
-.portal-input:focus {
-  background: rgba(255,255,255,0.15);
-  border-color: #4cc9f0;
-  box-shadow: 0 0 40px rgba(76, 201, 240, 0.3);
-}
-
-.go-btn {
-  background: var(--magic-border);
-  border: none;
-  padding: 20px 60px;
-  border-radius: 100px;
-  color: white;
-  font-weight: 800;
-  font-size: 24px;
-  cursor: pointer;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  transition: 0.3s;
-}
-
-.go-btn:hover { transform: scale(1.05); filter: brightness(1.2); }
-
-/* --- THE FIXED STORYBOOK --- */
-.storybook-container {
-  max-width: 1100px;
-  width: 95%;
-  height: 650px;
-  background: white;
-  margin: 50px auto;
+/* --- THE FIXED-BOOK READER --- */
+.platinum-book {
+  width: 1100px; height: 650px;
+  background: var(--paper);
   border-radius: 40px;
   display: flex;
   overflow: hidden;
+  position: relative;
   box-shadow: 0 40px 100px rgba(0,0,0,0.6);
-  position: relative;
+  margin: 50px auto;
 }
 
-.book-image-pan {
-  width: 50%;
-  height: 100%;
-  background: #000;
-  position: relative;
-}
-
-.book-image-pan img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.book-text-pan {
-  width: 50%;
-  height: 100%;
-  background: var(--page-bg);
-  padding: 60px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  color: #2b2d42;
-}
-
-/* --- NAVIGATION GEMS --- */
-.nav-gem {
+.book-nav-btn {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 80px;
-  height: 80px;
-  background: var(--magic-border);
+  top: 50%; transform: translateY(-50%);
+  width: 90px; height: 90px;
+  background: var(--gold);
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
+  border: none;
   cursor: pointer;
-  z-index: 100;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  color: white;
+  z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   transition: 0.3s;
 }
+.book-nav-btn:hover { transform: translateY(-50%) scale(1.15); filter: brightness(1.2); }
+.book-nav-btn.prev { left: -45px; }
+.book-nav-btn.next { right: -45px; }
 
-.nav-gem:hover { width: 90px; height: 90px; }
-.nav-gem.prev { left: -40px; }
-.nav-gem.next { right: -40px; }
-
-/* --- MISC --- */
-.navbar-platinum {
-  padding: 20px 60px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(255,255,255,0.02);
-  backdrop-filter: blur(10px);
+/* --- GAMES ZONE --- */
+.game-hub-card {
+  background: var(--glass);
+  padding: 30px;
+  border-radius: 40px;
+  text-align: center;
+  border: 4px solid rgba(255,255,255,0.1);
+  transition: 0.3s;
+  cursor: pointer;
 }
+.game-hub-card:hover { transform: translateY(-10px); border-color: var(--gold); }
